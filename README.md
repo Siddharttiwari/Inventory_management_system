@@ -4,10 +4,6 @@ Welcome to the **Inventory & Order Management System**! This is a complete, prod
 
 Built with modern web technologies, this platform is incredibly fast, responsive, and easy to use on any device.
 
-<div align="center">
-  <img src="assets/demo.gif" alt="System Demo Walkthrough" width="800"/>
-</div>
-
 ---
 
 ## 🌟 Key Features & Interface
@@ -62,7 +58,7 @@ This application features a **Multi-Tenant SaaS Architecture**.
 2. Ensure **Docker Desktop** is running.
 3. Start the entire application (Database, Backend, and Frontend) with one command:
 ```bash
-docker-compose up --build
+docker compose --env-file .env up --build
 ```
-4. Open your browser and go to `http://localhost:5173`.
+4. Open your browser and go to `http://localhost:8080`.
 5. Click **Sign Up** to create your first account and start managing your inventory!
