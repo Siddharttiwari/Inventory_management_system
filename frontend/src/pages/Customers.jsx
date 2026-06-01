@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
-import { UserPlus, Search } from 'lucide-react';
+import { UserPlus, Search, Mail, Phone, Hash } from 'lucide-react';
 
 const Customers = () => {
   const [customers, setCustomers] = useState([]);
@@ -58,7 +58,7 @@ const Customers = () => {
   return (
     <div className="animate-reveal">
       <div className="header-actions">
-        <h1 className="page-title" style={{margin: 0}}>Client Roster</h1>
+        <h1 className="page-title" style={{margin: 0}}>Customer Relationship Management (CRM)</h1>
       </div>
 
       <div className="card" style={{marginBottom: '3rem'}}>
@@ -111,10 +111,22 @@ const Customers = () => {
           <tbody>
             {filteredCustomers.map(c => (
               <tr key={c.id}>
-                <td style={{ fontFamily: 'monospace', color: 'var(--text-secondary)' }}>#{c.id}</td>
+                <td style={{ fontFamily: 'monospace', color: 'var(--text-secondary)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                    <Hash size={14} /> {c.id}
+                  </div>
+                </td>
                 <td style={{ fontWeight: 500 }}>{c.full_name}</td>
-                <td style={{ color: 'var(--text-secondary)' }}>{c.email}</td>
-                <td style={{ color: 'var(--text-secondary)' }}>{c.phone_number}</td>
+                <td style={{ color: 'var(--text-secondary)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <Mail size={14} /> {c.email}
+                  </div>
+                </td>
+                <td style={{ color: 'var(--text-secondary)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <Phone size={14} /> {c.phone_number}
+                  </div>
+                </td>
                 <td style={{ textAlign: 'right' }}>
                   <button className="btn btn-danger" style={{ padding: '0.4rem 0.8rem', fontSize: '0.85rem' }} onClick={() => handleDelete(c.id)}>Remove</button>
                 </td>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
-import { Plus, Edit2, X, Search } from 'lucide-react';
+import { Plus, Edit2, X, Search, Tag, DollarSign, Package } from 'lucide-react';
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -88,7 +88,7 @@ const Products = () => {
   return (
     <div className="animate-reveal">
       <div className="header-actions">
-        <h1 className="page-title" style={{margin: 0}}>Products Inventory</h1>
+        <h1 className="page-title" style={{margin: 0}}>Product Catalog Management</h1>
       </div>
 
       <div className="card" style={{marginBottom: '3rem'}}>
@@ -152,13 +152,31 @@ const Products = () => {
           <tbody>
             {filteredProducts.map(p => (
               <tr key={p.id}>
-                <td style={{ fontFamily: 'monospace', color: 'var(--text-secondary)' }}>{p.sku}</td>
+                <td style={{ fontFamily: 'monospace', color: 'var(--text-secondary)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                    <Tag size={14} /> {p.sku}
+                  </div>
+                </td>
                 <td style={{ fontWeight: 500 }}>{p.name}</td>
-                <td>${p.price.toFixed(2)}</td>
                 <td>
-                  <span style={{ color: p.quantity < 10 ? 'var(--danger)' : 'var(--text-primary)' }}>
-                    {p.quantity} units
-                  </span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                    <DollarSign size={14} color="var(--success, #10B981)" /> {p.price.toFixed(2)}
+                  </div>
+                </td>
+                <td>
+                  <div style={{ 
+                    display: 'inline-flex', 
+                    alignItems: 'center', 
+                    gap: '0.25rem',
+                    background: p.quantity < 10 ? 'rgba(239, 68, 68, 0.1)' : 'rgba(16, 185, 129, 0.1)',
+                    color: p.quantity < 10 ? 'var(--danger)' : 'var(--success, #10B981)',
+                    padding: '0.2rem 0.6rem',
+                    borderRadius: '12px',
+                    fontSize: '0.85rem',
+                    fontWeight: 600
+                  }}>
+                    <Package size={14} /> {p.quantity} units
+                  </div>
                 </td>
                 <td style={{ textAlign: 'right' }}>
                   <button className="btn" style={{ padding: '0.4rem 0.8rem', fontSize: '0.85rem', marginRight: '0.5rem', background: 'transparent', color: 'var(--text-primary)', border: '1px solid var(--border-color)' }} onClick={() => handleEdit(p)}>Edit</button>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
-import { X, AlertCircle } from 'lucide-react';
+import { X, AlertCircle, Package, Users, ShoppingCart, DollarSign, TrendingUp } from 'lucide-react';
 
 const COLORS = ['#D1D5DB', '#9CA3AF', '#6B7280', '#4B5563', '#374151', '#FFFFFF'];
 
@@ -10,7 +10,9 @@ const Dashboard = () => {
     products: 0,
     customers: 0,
     orders: 0,
-    lowStockCount: 0
+    lowStockCount: 0,
+    totalRevenue: 0,
+    averageOrderValue: 0
   });
 
   const [productsData, setProductsData] = useState([]);
@@ -30,12 +32,17 @@ const Dashboard = () => {
         const products = resProducts.data;
         const orders = resOrders.data;
         const lowStock = products.filter(p => p.quantity < 10);
+        
+        const totalRev = orders.reduce((sum, order) => sum + order.total_amount, 0);
+        const aov = orders.length > 0 ? totalRev / orders.length : 0;
 
         setStats({
           products: products.length,
           customers: resCustomers.data.length,
           orders: orders.length,
-          lowStockCount: lowStock.length
+          lowStockCount: lowStock.length,
+          totalRevenue: totalRev,
+          averageOrderValue: aov
         });
 
         setLowStockItems(lowStock);
@@ -79,7 +86,7 @@ const Dashboard = () => {
       return (
         <div style={{ background: '#171A21', border: '1px solid rgba(255,255,255,0.1)', padding: '10px 15px', borderRadius: '8px', color: '#F5F7FA' }}>
           <p style={{ margin: 0, fontWeight: 600 }}>{label || payload[0].name}</p>
-          <p style={{ margin: 0, color: '#9CA3AF' }}>{payload[0].name === 'stock' ? 'Quantity' : 'Revenue'}: {payload[0].name === 'stock' ? '' : '$'}{payload[0].value}</p>
+          <p style={{ margin: 0, color: '#9CA3AF' }}>{payload[0].name === 'stock' ? 'Quantity' : 'Revenue'}: {payload[0].name === 'stock' ? '' : '$'}{payload[0].value.toFixed(2)}</p>
         </div>
       );
     }
@@ -88,24 +95,32 @@ const Dashboard = () => {
 
   return (
     <div className="animate-reveal" style={{ position: 'relative' }}>
-      <h1 className="page-title">Overview</h1>
+      <h1 className="page-title">Command Center & Analytics</h1>
       
       <div className="dashboard-grid">
         <div className="card stat-card" style={{ animationDelay: '0.1s' }}>
-          <h3>Total Products</h3>
+          <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Package size={18} /> Total Products</h3>
           <p>{stats.products}</p>
         </div>
         <div className="card stat-card" style={{ animationDelay: '0.2s' }}>
-          <h3>Total Customers</h3>
+          <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Users size={18} /> Total Customers</h3>
           <p>{stats.customers}</p>
         </div>
         <div className="card stat-card" style={{ animationDelay: '0.3s' }}>
-          <h3>Total Orders</h3>
+          <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><ShoppingCart size={18} /> Total Orders</h3>
           <p>{stats.orders}</p>
         </div>
-        <div className="card stat-card" style={{ animationDelay: '0.4s', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        <div className="card stat-card" style={{ animationDelay: '0.4s' }}>
+          <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--success, #10B981)' }}><DollarSign size={18} /> Total Revenue</h3>
+          <p style={{ color: 'var(--success, #10B981)' }}>${stats.totalRevenue.toFixed(2)}</p>
+        </div>
+        <div className="card stat-card" style={{ animationDelay: '0.5s' }}>
+          <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><TrendingUp size={18} /> Avg Order Value</h3>
+          <p>${stats.averageOrderValue.toFixed(2)}</p>
+        </div>
+        <div className="card stat-card" style={{ animationDelay: '0.6s', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
           <div>
-            <h3 style={{color: 'var(--danger)'}}>Low Stock Alerts</h3>
+            <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--danger)' }}><AlertCircle size={18} /> Low Stock</h3>
             <p style={{color: 'var(--danger)'}}>{stats.lowStockCount}</p>
           </div>
           {stats.lowStockCount > 0 && (

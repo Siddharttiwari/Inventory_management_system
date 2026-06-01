@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
-import { ShoppingBag, Search } from 'lucide-react';
+import { ShoppingBag, Search, CreditCard, Hash } from 'lucide-react';
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
@@ -68,7 +68,7 @@ const Orders = () => {
   return (
     <div className="animate-reveal">
       <div className="header-actions">
-        <h1 className="page-title" style={{margin: 0}}>Order Management</h1>
+        <h1 className="page-title" style={{margin: 0}}>Order Fulfillment & Tracking</h1>
       </div>
 
       <div className="card" style={{marginBottom: '3rem'}}>
@@ -129,14 +129,32 @@ const Orders = () => {
               <th style={{ textAlign: 'right' }}>Actions</th>
             </tr>
           </thead>
-          <tbody>
+            <tbody>
             {filteredOrders.map(o => (
               <tr key={o.id}>
-                <td style={{ fontFamily: 'monospace', color: 'var(--text-secondary)' }}>ORD-{o.id.toString().padStart(4, '0')}</td>
+                <td style={{ fontFamily: 'monospace' }}>
+                  <div style={{ 
+                    display: 'inline-flex', 
+                    alignItems: 'center', 
+                    gap: '0.25rem',
+                    background: 'rgba(59, 130, 246, 0.1)',
+                    color: 'var(--primary-color)',
+                    padding: '0.2rem 0.6rem',
+                    borderRadius: '12px',
+                    fontSize: '0.85rem',
+                    fontWeight: 600
+                  }}>
+                    <Hash size={14} /> ORD-{o.id.toString().padStart(4, '0')}
+                  </div>
+                </td>
                 <td style={{ fontWeight: 500 }}>{getCustomerName(o.customer_id)}</td>
                 <td>{getProductName(o.product_id)}</td>
                 <td>{o.quantity}</td>
-                <td style={{ fontWeight: 600 }}>${o.total_amount.toFixed(2)}</td>
+                <td style={{ fontWeight: 600 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <CreditCard size={14} color="var(--text-secondary)" /> ${o.total_amount.toFixed(2)}
+                  </div>
+                </td>
                 <td style={{ textAlign: 'right' }}>
                   <button className="btn btn-danger" style={{ padding: '0.4rem 0.8rem', fontSize: '0.85rem' }} onClick={() => handleDelete(o.id)}>Cancel</button>
                 </td>
