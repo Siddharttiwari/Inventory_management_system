@@ -46,7 +46,7 @@ const Login = () => {
       <div className="card animate-reveal" style={{ maxWidth: '400px', width: '100%', textAlign: 'center' }}>
         <Shield size={48} color="var(--primary-color)" style={{ marginBottom: '1.5rem' }} />
         <h2 style={{ marginBottom: '0.5rem', color: 'var(--text-primary)' }}>
-          Welcome to <strong>Inventory Management</strong>
+          Welcome to <strong>Smart Inventory & Order Management System</strong>
         </h2>
         <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>
           Please sign in to access the administrator dashboard.
@@ -63,7 +63,7 @@ const Login = () => {
               value={username} 
               onChange={(e) => setUsername(e.target.value)} 
               required 
-              placeholder="Enter admin username"
+              placeholder="Enter your username"
             />
           </div>
           <div className="form-group">
