@@ -12,6 +12,12 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Inventory & Order Management API")
 
+@app.get("/reset-database")
+def reset_database():
+    models.Base.metadata.drop_all(bind=engine)
+    models.Base.metadata.create_all(bind=engine)
+    return {"message": "Database reset successfully!"}
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
