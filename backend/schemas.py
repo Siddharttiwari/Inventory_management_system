@@ -19,6 +19,7 @@ class ProductUpdate(BaseModel):
 
 class Product(ProductBase):
     id: int
+    user_id: int
     model_config = ConfigDict(from_attributes=True)
 
 # Customer Schemas
@@ -32,6 +33,7 @@ class CustomerCreate(CustomerBase):
 
 class Customer(CustomerBase):
     id: int
+    user_id: int
     model_config = ConfigDict(from_attributes=True)
 
 # Order Schemas
@@ -46,6 +48,7 @@ class OrderCreate(OrderBase):
 class Order(OrderBase):
     id: int
     total_amount: float
+    user_id: int
     model_config = ConfigDict(from_attributes=True)
 
 class Token(BaseModel):

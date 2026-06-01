@@ -10,7 +10,9 @@ class Product(Base):
     sku = Column(String, unique=True, index=True)
     price = Column(Float)
     quantity = Column(Integer, default=0)
+    user_id = Column(Integer, ForeignKey("users.id"))
 
+    owner = relationship("User", back_populates="products")
     orders = relationship("Order", back_populates="product")
 
 class Customer(Base):
@@ -20,7 +22,9 @@ class Customer(Base):
     full_name = Column(String, index=True)
     email = Column(String, unique=True, index=True)
     phone_number = Column(String)
+    user_id = Column(Integer, ForeignKey("users.id"))
 
+    owner = relationship("User", back_populates="customers")
     orders = relationship("Order", back_populates="customer")
 
 class Order(Base):
@@ -31,7 +35,9 @@ class Order(Base):
     product_id = Column(Integer, ForeignKey("products.id"))
     quantity = Column(Integer)
     total_amount = Column(Float)
+    user_id = Column(Integer, ForeignKey("users.id"))
 
+    owner = relationship("User", back_populates="orders")
     customer = relationship("Customer", back_populates="orders")
     product = relationship("Product", back_populates="orders")
 
@@ -41,3 +47,7 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String, unique=True, index=True)
     hashed_password = Column(String)
+
+    products = relationship("Product", back_populates="owner")
+    customers = relationship("Customer", back_populates="owner")
+    orders = relationship("Order", back_populates="owner")
