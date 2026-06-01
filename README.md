@@ -29,7 +29,7 @@ A built-in CRM (Customer Relationship Manager) to keep track of everyone buying 
 ### 🚚 Orders
 Track the fulfillment pipeline from start to finish. When an order is placed, the system automatically deducts the exact quantity from your product inventory in real-time.
 <div align="center">
-  <img src="assets/orders.png" alt="Orders View" width="800"/>
+  <img src="assets/order.png" alt="Orders View" width="800"/>
 </div>
 
 ---
