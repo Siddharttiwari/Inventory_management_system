@@ -5,6 +5,7 @@ import Products from './pages/Products';
 import Customers from './pages/Customers';
 import Orders from './pages/Orders';
 import Login from './pages/Login';
+import Signup from './pages/Signup';
 import { LayoutDashboard, Package, Users, ShoppingCart, Box, LogOut } from 'lucide-react';
 
 const ProtectedLayout = ({ children }) => {
@@ -75,6 +76,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="*" element={
           <ProtectedLayout>
             <Routes>

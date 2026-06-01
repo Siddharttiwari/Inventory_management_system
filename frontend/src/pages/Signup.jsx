@@ -1,35 +1,37 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Shield } from 'lucide-react';
+import { ShieldAlert } from 'lucide-react';
 import api from '../services/api';
 
-const Login = () => {
+const Signup = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
     setError('');
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
     setIsLoading(true);
 
     try {
-      const formData = new URLSearchParams();
-      formData.append('username', username);
-      formData.append('password', password);
-
-      const res = await api.post('/token', formData, {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
+      await api.post('/register', {
+        username,
+        password
       });
 
-      localStorage.setItem('token', res.data.access_token);
-      navigate('/');
+      // Automatically redirect to login page after successful registration
+      navigate('/login');
     } catch (err) {
-      setError('Invalid username or password');
+      setError(err.response?.data?.detail || 'An error occurred during registration');
     } finally {
       setIsLoading(false);
     }
@@ -44,17 +46,17 @@ const Login = () => {
       padding: '2rem'
     }}>
       <div className="card animate-reveal" style={{ maxWidth: '400px', width: '100%', textAlign: 'center' }}>
-        <Shield size={48} color="var(--primary-color)" style={{ marginBottom: '1.5rem' }} />
+        <ShieldAlert size={48} color="var(--primary-color)" style={{ marginBottom: '1.5rem' }} />
         <h2 style={{ marginBottom: '0.5rem', color: 'var(--text-primary)' }}>
-          Welcome to <strong>Inventory Management</strong>
+          Create an <strong>Account</strong>
         </h2>
         <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>
-          Please sign in to access the administrator dashboard.
+          Register to access the administrator dashboard.
         </p>
 
         {error && <div className="error-message" style={{ marginBottom: '1.5rem' }}>{error}</div>}
 
-        <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', textAlign: 'left' }}>
+        <form onSubmit={handleSignup} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', textAlign: 'left' }}>
           <div className="form-group">
             <label className="form-label">Username</label>
             <input 
@@ -77,20 +79,31 @@ const Login = () => {
               placeholder="Enter password"
             />
           </div>
+          <div className="form-group">
+            <label className="form-label">Confirm Password</label>
+            <input 
+              className="form-control" 
+              type="password" 
+              value={confirmPassword} 
+              onChange={(e) => setConfirmPassword(e.target.value)} 
+              required 
+              placeholder="Confirm password"
+            />
+          </div>
           <button 
             type="submit" 
             className="btn btn-primary" 
             style={{ marginTop: '1rem', justifyContent: 'center' }}
             disabled={isLoading}
           >
-            {isLoading ? 'Signing In...' : 'Sign In'}
+            {isLoading ? 'Creating Account...' : 'Sign Up'}
           </button>
         </form>
 
         <div style={{ marginTop: '2rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
-          Don't have an account?{' '}
-          <Link to="/signup" style={{ color: 'var(--primary-color)', textDecoration: 'none', fontWeight: 600 }}>
-            Sign Up
+          Already have an account?{' '}
+          <Link to="/login" style={{ color: 'var(--primary-color)', textDecoration: 'none', fontWeight: 600 }}>
+            Sign In
           </Link>
         </div>
       </div>
@@ -98,4 +111,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;
